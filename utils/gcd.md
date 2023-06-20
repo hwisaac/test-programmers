@@ -3,9 +3,8 @@
 JavaScript에서 두 수의 최대공약수(GCD: Greatest Common Divisor)를 구하는 가장 기본적인 방법은 유클리드 알고리즘을 사용하는 것입니다. 아래에 이를 활용하여 최대공약수를 찾는 함수를 제공하겠습니다.
 
 ```javascript
-function gcd(a, b) {
+function euclidGCD(a, b) {
     if (b === 0) return a;
-
     return gcd(b, a % b);
 }
 ```
@@ -16,6 +15,24 @@ function gcd(a, b) {
 
 유클리드 알고리즘이 상당히 효율적인 이유는, 각 재귀 호출에서 최소한 하나의 숫자가 절반 이상 줄어들기 때문입니다. 이로 인해 이 알고리즘의 시간 복잡도는 **로그 성능**을 보입니다. 즉, 큰 숫자에 대해서도 매우 빠르게 동작합니다.
 
+```js
+// 이 함수 역시 유클리드 알고리즘을 이용하여 gcd 를 구한다.
+function getGCD (a, b) {
+	while (b > 0) {
+		const rest = a % b;
+		a = b;
+		b = rest;
+	}
+	return a;
+};
+
+// 아래는 축약버전
+export default function getGCD(a, b) {
+  while (b > 0) [a, b] = [b, a % b];
+  return a;
+}
+
+```
 ## euclidGCD vs getGCD
 
  getGCD와 euclidGCD는 모두 유클리드 호제법을 사용하여 최대공약수(GCD)를 계산하는 함수입니다. 하지만 두 함수의 구현 방식이 약간 다릅니다. 성능 비교를 위해 각 함수의 성능 측정을 수행해보겠습니다.

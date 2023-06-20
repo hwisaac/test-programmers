@@ -1,7 +1,6 @@
 const filePath = process.platform === 'linux' ? 0 : './baekjoon/input.txt';
 let input = require('fs').readFileSync(filePath).toString().trim().split('\n');
 
-
 function solution(input) {
   let result = '';
   const maxLen = Math.max(...input.map((word) => word.length));
