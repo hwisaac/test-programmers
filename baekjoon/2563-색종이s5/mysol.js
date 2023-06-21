@@ -6,9 +6,29 @@ let [_, ...papers] = require('fs')
   .split('\n');
 
 function solution(papers) {
-  let result;
+  const BG_SIZE = 100;
 
-  return result;
+  const background = new Array(BG_SIZE);
+  for (let i = 0; i < BG_SIZE; i++) {
+    background[i] = new Array(BG_SIZE).fill(0);
+  }
+
+  const paperSize = 10;
+  let blackArea = 0;
+
+  for (paper of papers) {
+    const [a, b] = paper.split(' ').map(Number);
+    for (let i = a; i < a + paperSize; i++) {
+      for (let j = b; j < b + paperSize; j++) {
+        if (background[i][j] === 0) {
+          background[i][j] = 1;
+          blackArea++;
+        }
+      }
+    }
+  }
+
+  return blackArea;
 }
 
-solution(papers); //?
+console.log(solution(papers));

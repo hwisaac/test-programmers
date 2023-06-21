@@ -72,3 +72,51 @@ console.timeEnd("str.split");
 
 nodejs:
 ![](readMeImages/2023-06-20-14-14-33.png)
+
+## 배열 만들기
+
+**10*10 2차원 배열 ( 내용은 0 으로 채워짐 )**
+```js
+const ARR_SIZE = 10;
+const arr = new Array(ARR_SIZE).fill(0).map(() => new Array(ARR_SIZE).fill(0));
+```
+
+> 주의: 다음과 같이 작성하면 안된다. `fill` 인자로 `mutable` 인자를 전달하지 않도록 주의
+
+```js
+const ARR_SIZE = 10;
+const arr = new Array(ARR_SIZE).fill(new Array(ARR_SIZE).fill(0))
+```
+
+
+## 제곱 연산하기 비교 : `**` vs `Math.pow`
+
+> `**` 연산자가 더 빠르다.
+
+
+```js
+function benchmarkMathPow(x, y, iterations) {
+  console.time('Math.pow');
+  for (let i = 0; i < iterations; i++) {
+    Math.pow(x, y);
+  }
+  console.timeEnd('Math.pow');
+}
+
+function benchmarkExponentiationOperator(x, y, iterations) {
+  console.time('**');
+  for (let i = 0; i < iterations; i++) {
+    x ** y;
+  }
+  console.timeEnd('**');
+}
+
+// 벤치마크 테스트 실행
+const x = 2;
+const y = 10;
+const iterations = 100000000;
+
+benchmarkMathPow(x, y, iterations); // 크롬: 82.3ms, nodeJS: 2.25ms
+benchmarkExponentiationOperator(x, y, iterations); // 크롬: 78.87 ms , nodeJS: 2.130s
+
+```
