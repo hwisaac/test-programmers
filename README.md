@@ -120,3 +120,107 @@ benchmarkMathPow(x, y, iterations); // 크롬: 82.3ms, nodeJS: 2.25ms
 benchmarkExponentiationOperator(x, y, iterations); // 크롬: 78.87 ms , nodeJS: 2.130s
 
 ```
+
+## 큰값 연산하기 비교 : `Math.max(a,b)` vs `a>b?a:b`
+
+> `Math.max` 승!
+
+
+```js
+function comparePerformance(fn1, fn2, input, iterations = 1000000) {
+  // 첫 번째 함수 실행 시간 측정
+  const start1 = performance.now();
+  for (let i = 0; i < iterations; i++) {
+    fn1(input);
+  }
+  const end1 = performance.now();
+  const elapsed1 = end1 - start1;
+
+  // 두 번째 함수 실행 시간 측정
+  const start2 = performance.now();
+  for (let i = 0; i < iterations; i++) {
+    fn2(input);
+  }
+  const end2 = performance.now();
+  const elapsed2 = end2 - start2;
+
+  // 성능 차이 출력
+  console.log(`첫 번째 함수 실행 시간: ${elapsed1.toFixed(4)}ms`);
+  console.log(`두 번째 함수 실행 시간: ${elapsed2.toFixed(4)}ms`);
+
+  if (elapsed1 < elapsed2) {
+    console.log(`첫 번째 함수가 더 빠릅니다.`);
+  } else if (elapsed1 > elapsed2) {
+    console.log(`두 번째 함수가 더 빠릅니다.`);
+  } else {
+    console.log(`두 함수의 실행 시간이 동일합니다.`);
+  }
+}
+
+function getMaxUsingMath(a, b) {
+  return Math.max(a, b);
+}
+
+function getMaxUsingConditional(a, b) {
+  return a > b ? a : b;
+}
+
+comparePerformance(getMaxUsingMath, getMaxUsingConditional, 10, 1000000);
+
+```
+
+
+크롬:
+![](readMeImages/2023-06-22-16-35-49.png)
+
+nodejs:
+![](readMeImages/2023-06-22-16-36-35.png)
+
+## 문자 대체하기 성능 비교 : `replaceAll` vs `split()`
+
+> replaceAll 승
+
+```js
+const filePath = process.platform === 'linux' ? 0 : './baekjoon/input.txt';
+let input = require('fs')
+  .readFileSync(filePath)
+  .toString()
+  .trim()
+  .split(' ')
+  .map(Number);
+
+  function solutionSplitJoin(my_string, letter) {
+    let startTime = performance.now();
+    
+    let result = my_string.split(letter).join('');
+    
+    let endTime = performance.now();
+    let executionTime = endTime - startTime;
+    
+    console.log("Using split() and join():");
+    console.log("Execution time:", executionTime, "milliseconds");
+  }
+  
+  function solutionReplaceAll(my_string, letter) {
+    let startTime = performance.now();
+    
+    let result = my_string.replaceAll(letter, '');
+    
+    let endTime = performance.now();
+    let executionTime = endTime - startTime;
+    
+    console.log("Using replaceAll():");
+    console.log("Execution time:", executionTime, "milliseconds");
+  }
+  const my_string = "Hello World".repeat(10000);
+  // 예시 테스트
+  solutionSplitJoin(my_string, "o");
+  solutionReplaceAll(my_string, "o");
+  
+```
+
+node.js
+![](readMeImages/2023-06-23-14-57-16.png)
+
+크롬:
+![](readMeImages/2023-06-23-14-57-33.png)

@@ -1,20 +1,28 @@
 const filePath = process.platform === 'linux' ? 0 : './baekjoon/input.txt';
-let [a, b, c, d, e, f] = require('fs')
+let input = require('fs')
   .readFileSync(filePath)
   .toString()
   .trim()
   .split(' ')
   .map(Number);
 
-function solution(my_string, overwrite_string, s) {
-  const arrMyString = my_string.split('');
-  arrMyString.splice(s, overwrite_string.length, ...overwrite_string);
-  return arrMyString.join('');
+function testSlicePerformance() {
+  const emergency = Array.from({ length: 10000000 }, (_, index) => index + 1);
+
+  console.time('slice');
+  const copiedArray = emergency.slice();
+  console.timeEnd('slice');
 }
+  
+  function testSpreadOperatorPerformance() {
+    const emergency = Array.from({ length: 10000000 }, (_, index) => index + 1);
 
-solution('Program29b8UYP', 'merS123', 7); //?
+    console.time('spread');
+    const copiedArray = [...emergency];
+    console.timeEnd('spread');
+  }
 
-const months = ['Jan', 'March', 'April', 'June'];
-months.splice(1, 0, 'Feb');
-// Inserts at index 1
-console.log(months);
+  testSlicePerformance();
+  testSpreadOperatorPerformance(); 
+  
+   
