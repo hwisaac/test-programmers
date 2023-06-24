@@ -1,5 +1,55 @@
 # 알고리즘 공부
 
+## 연산속도 우선하기
+
+여기에는 알고리즘의 효율성을 높이는 최적화 기법과 JavaScript의 내장 함수를 활용하는 방법 등이 포함될 수 있습니다. 다음은 몇 가지 예시입니다.
+
+- 데이터 구조 선택: 적절한 데이터 구조를 선택하여 알고리즘의 실행 시간을 최적화할 수 있습니다. 예를 들어, 배열 대신 객체 또는 맵을 사용하면 검색 및 삽입 연산에 효율적입니다.
+
+- 선형 검색 최적화: 선형 검색을 수행해야 할 때, 배열의 요소를 하나씩 확인하는 대신, Array.prototype.includes() 함수를 사용하면 연산 속도를 최적화할 수 있습니다.
+
+```javascript
+const array = [1, 2, 3, 4, 5];
+const target = 3;
+if (array.includes(target)) {
+  console.log("찾았습니다!");
+}
+```
+- 이진 검색 활용: 정렬된 배열에서 특정 값을 검색해야 할 때, 이진 검색 알고리즘을 활용할 수 있습니다. Array.prototype.indexOf() 함수 대신 Array.prototype.binarySearch() 함수를 사용하면 성능을 향상시킬 수 있습니다. 이진 검색은 데이터의 크기에 상관없이 O(log n)의 시간 복잡도를 가집니다.
+
+```javascript
+// 이진 검색 함수 (재귀적 구현)
+function binarySearch(arr, target, start = 0, end = arr.length - 1) {
+  if (start > end) return -1; // 찾지 못한 경우
+  const mid = Math.floor((start + end) / 2);
+  if (arr[mid] === target) return mid; // 찾은 경우
+  if (arr[mid] > target) return binarySearch(arr, target, start, mid - 1); // 왼쪽 반 검색
+  return binarySearch(arr, target, mid + 1, end); // 오른쪽 반 검색
+}
+
+const array = [1, 2, 3, 4, 5];
+const target = 3;
+const index = binarySearch(array, target);
+if (index !== -1) {
+  console.log("찾았습니다!");
+}
+```
+- Memoization 활용: 중복 계산을 피하기 위해 Memoization(메모이제이션)을 활용할 수 있습니다. Memoization은 이전에 계산한 결과를 저장하여 동일한 입력이 나오면 다시 계산하지 않고 저장된 결과를 반환합니다. 이를 통해 연산 속도를 향상시킬 수 있습니다.
+
+```javascript
+const memo = {};
+
+function fibonacci(n) {
+  if (n <= 1) return n;
+  if (memo[n]) return memo[n]; // 이전에 계산한 결과가 있으면 반환
+  const result = fibonacci(n - 1) + fibonacci(n - 2);
+  memo[n] = result; // 결과 저장
+  return result;
+}
+
+console.log(fibonacci(10));
+```
+- 알고리즘 최적화: 알고리즘 자체를 최적화하여 실행 시간을 단축할 수 있습니다. 예를 들어, 정렬 알고리즘을 사용해야 할 때 퀵 정렬(Quick Sort)이 병합 정렬(Merge Sort)보다 더 빠르게 동작합니다. 따라서 문제에 맞는 최적의 알고리즘을 선택하는 것이 중요합니다.
 ## int 대신 bigint 를 써야 하는 경우는 언제일까?
 
 `bigint`는 JavaScript의 숫자 데이터 타입 중 하나로, 정수형을 표현하는 데 사용됩니다. `bigint`는 정수의 크기에 제한이 없으며, 표현 가능한 범위가 상당히 큽니다.
@@ -224,3 +274,107 @@ node.js
 
 크롬:
 ![](readMeImages/2023-06-23-14-57-33.png)
+
+## 정수인지 비교하기 성능비교: Math.floor vs Number.isInteger
+> `Number.isInteger` 승!
+
+
+```js
+function isInteger(value) {
+  if (typeof value !== 'number') {
+    return false;
+  }
+  
+  return Math.floor(value) === value;
+}
+
+function measurePerformance(callback, iterations) {
+  const start = performance.now();
+  
+  for (let i = 0; i < iterations; i++) {
+    callback();
+  }
+  
+  const end = performance.now();
+  return end - start;
+}
+
+const testValue = 5.1;
+const iterations = 1000000;
+
+const isIntegerExecutionTime = measurePerformance(() => {
+  isInteger(testValue);
+}, iterations);
+
+const numberIsIntegerExecutionTime = measurePerformance(() => {
+  Number.isInteger(testValue);
+}, iterations);
+
+console.log('isInteger 실행 시간(ms):', isIntegerExecutionTime);
+console.log('Number.isInteger 실행 시간(ms):', numberIsIntegerExecutionTime);
+```
+
+![](readMeImages/2023-06-24-15-43-39.png)
+
+
+## 문자열 덧셈하기 성능 비교 : `reduce` vs `+`
+> `reduce` 승!
+
+
+```js
+function solution1(letter) {
+  const morse = {
+    '.-': 'a', '-...': 'b', '-.-.': 'c', '-..': 'd', '.': 'e', '..-.': 'f',
+    '--.': 'g', '....': 'h', '..': 'i', '.---': 'j', '-.-': 'k', '.-..': 'l',
+    '--': 'm', '-.': 'n', '---': 'o', '.--.': 'p', '--.-': 'q', '.-.': 'r',
+    '...': 's', '-': 't', '..-': 'u', '...-': 'v', '.--': 'w', '-..-': 'x',
+    '-.--': 'y', '--..': 'z'
+  };
+
+  const words = letter.split(' ');
+  let result = '';
+
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    result += morse[word];
+  }
+
+  return result;
+}
+
+function solution2(letter) {
+  const morse = {
+    '.-': 'a', '-...': 'b', '-.-.': 'c', '-..': 'd', '.': 'e', '..-.': 'f',
+    '--.': 'g', '....': 'h', '..': 'i', '.---': 'j', '-.-': 'k', '.-..': 'l',
+    '--': 'm', '-.': 'n', '---': 'o', '.--.': 'p', '--.-': 'q', '.-.': 'r',
+    '...': 's', '-': 't', '..-': 'u', '...-': 'v', '.--': 'w', '-..-': 'x',
+    '-.--': 'y', '--..': 'z'
+  };
+
+  return letter.split(' ').reduce((prev, curr) => prev + morse[curr], '');
+}
+
+function measurePerformance(callback, letter, iterations) {
+  const start = performance.now();
+  
+  for (let i = 0; i < iterations; i++) {
+    callback(letter);
+  }
+  
+  const end = performance.now();
+  return end - start;
+}
+
+const letter = ".... . .-.. .-.. ---";
+const iterations = 1000000;
+
+const solution1ExecutionTime = measurePerformance(solution1, letter, iterations);
+const solution2ExecutionTime = measurePerformance(solution2, letter, iterations);
+
+console.log('Solution 1(+) 실행 시간(ms):', solution1ExecutionTime);
+console.log('Solution 2(reduce) 실행 시간(ms):', solution2ExecutionTime);
+
+```
+
+![](readMeImages/2023-06-24-16-04-10.png)
+

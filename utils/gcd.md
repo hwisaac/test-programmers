@@ -35,7 +35,7 @@ export default function getGCD(a, b) {
 ```
 ## euclidGCD vs getGCD
 
- getGCD와 euclidGCD는 모두 유클리드 호제법을 사용하여 최대공약수(GCD)를 계산하는 함수입니다. 하지만 두 함수의 구현 방식이 약간 다릅니다. 성능 비교를 위해 각 함수의 성능 측정을 수행해보겠습니다.
+ `getGCD`와 `euclidGCD`는 모두 유클리드 호제법을 사용하여 최대공약수(GCD)를 계산하는 함수입니다. 하지만 두 함수의 구현 방식이 약간 다릅니다. 성능 비교를 위해 각 함수의 성능 측정을 수행해보겠습니다.
 
 ```javascript
 // getGCD 함수 성능 측정
@@ -50,7 +50,7 @@ euclidGCD(123456789, 987654321);
 const endTime2 = performance.now();
 const executionTime2 = endTime2 - startTime2;
 
-console.log(`getGCD 함수 실행 시간: ${executionTime1}ms`); // 0.1ms 약간 더 빠른듯?
+console.log(`getGCD 함수 실행 시간: ${executionTime1}ms`); // 0.1ms
 console.log(`euclidGCD 함수 실행 시간: ${executionTime2}ms`); // 0.1ms
 ```
 
