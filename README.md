@@ -378,3 +378,4 @@ console.log('Solution 2(reduce) 실행 시간(ms):', solution2ExecutionTime);
 
 ![](readMeImages/2023-06-24-16-04-10.png)
 
+## 2로 나누고 소수 버리기 `Math.floor(n/2)` vs `n >> 1`

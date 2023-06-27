@@ -1,3 +1,4 @@
+/** 산술평균, 중앙값, 최빈값, 범위를 리턴하는 함수 */
 export default function calcStatistics(N, numbers) {
   // 1. 산술평균 계산
   const sum = numbers.reduce((acc, cur) => acc + cur, 0);

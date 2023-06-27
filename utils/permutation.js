@@ -1,3 +1,4 @@
+/** nPk */
 export default function permutation(n, k) {
   const result = [];
 

@@ -1,3 +1,4 @@
+/** nCk */
 export default function combination(n, k) {
   const memo = [];
 

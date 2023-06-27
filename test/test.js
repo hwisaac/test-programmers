@@ -3,30 +3,24 @@ let input = require('fs')
   .readFileSync(filePath)
   .toString()
   .trim()
-  .split(' ')
+  .split('\n')
   .map(Number);
-  function combination(n, k) {
-    const memo = [];
-
-    function calculateCombination(n, k) {
-      if (k === 0 || k === n) return 1;
-      if (memo[n] && memo[n][k]) return memo[n][k];
-
-      if (!memo[n]) {
-        memo[n] = [];
-      }
-
-      const result =
-        calculateCombination(n - 1, k - 1) + calculateCombination(n - 1, k);
-      memo[n][k] = result;
-      return result;
-    }
-
-    return calculateCombination(n, k);
-  }
   
-  // 예시 사용법
-  const n = 5;
-  const k = 3;
-  const result = combination(n, k);
-  console.log(result);
+  function solution(arr, queries) {
+    var answer = [];
+    for ([s, e, k] of queries) {
+      let min = run(arr, s, e, k);
+      answer.push(min);
+    }
+    return answer;
+  }
+
+function run(arr, s, e, k) {
+  let min = -1;
+  for (let i = s; i <= e; i++) {
+    if (k < arr[i]) {
+      min = arr[i] < min ? arr[i] : min;
+    }
+  }
+  return min;
+}

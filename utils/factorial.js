@@ -1,3 +1,4 @@
+/** k! */
 export default function factorial(k) {
   const memo = [];
 
