@@ -15,12 +15,19 @@ let input = require('fs')
     return answer;
   }
 
-function run(arr, s, e, k) {
-  let min = -1;
-  for (let i = s; i <= e; i++) {
-    if (k < arr[i]) {
-      min = arr[i] < min ? arr[i] : min;
+  function run(arr, s, e, k) {
+    let min = -1;
+    const newArr = [...arr];
+
+    const mathmin = Math.min(...newArr.slice(s, e + 1).filter((n) => n > k));
+
+    if (mathmin > Number.MAX_SAFE_INTEGER) {
+      return -1;
     }
+    return mathmin;
   }
-  return min;
-}
+
+const arr = [0, 1, 2, 4, 3];
+const queries = [[0, 4, 2],[0, 3, 2],[0, 2, 2]]
+
+solution(arr, queries) //?

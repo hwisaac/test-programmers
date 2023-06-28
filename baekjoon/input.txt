@@ -1,14 +1,16 @@
-6
-12
-28
-1123
-120
-301
-20
-2
-6
-12
-28
-496
-8128
--1
+15
+push 1
+push 2
+front
+back
+size
+empty
+pop
+pop
+pop
+size
+empty
+pop
+push 3
+empty
+front
