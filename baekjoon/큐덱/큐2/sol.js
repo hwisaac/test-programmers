@@ -6,8 +6,8 @@ let [n, ...arr] = require('fs')
   .split('\n');
 
 class Node {
-  constructor(item) {
-    this.item = item;
+  constructor(value) {
+    this.value = value;
     this.next = null;
   }
 }

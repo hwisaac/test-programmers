@@ -6,28 +6,17 @@ let input = require('fs')
   .split('\n')
   .map(Number);
   
-  function solution(arr, queries) {
+  function solution(l, r) {
     var answer = [];
-    for ([s, e, k] of queries) {
-      let min = run(arr, s, e, k);
-      answer.push(min);
+
+    for (let i = l; i <= r; i++) {
+      if (i % 5 === 0 && isZeroFive(i)) {
+        answer.push(i);
+      }
     }
-    return answer;
+    return answer.length === 0 ? [-1] : answer;
   }
 
-  function run(arr, s, e, k) {
-    let min = -1;
-    const newArr = [...arr];
-
-    const mathmin = Math.min(...newArr.slice(s, e + 1).filter((n) => n > k));
-
-    if (mathmin > Number.MAX_SAFE_INTEGER) {
-      return -1;
-    }
-    return mathmin;
-  }
-
-const arr = [0, 1, 2, 4, 3];
-const queries = [[0, 4, 2],[0, 3, 2],[0, 2, 2]]
-
-solution(arr, queries) //?
+function isZeroFive(n) {
+  return [...String(n).matchAll(/[^05]/g)].length === 0;
+}
