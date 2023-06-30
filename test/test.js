@@ -6,17 +6,15 @@ let input = require('fs')
   .split('\n')
   .map(Number);
   
-  function solution(l, r) {
-    var answer = [];
-
-    for (let i = l; i <= r; i++) {
-      if (i % 5 === 0 && isZeroFive(i)) {
-        answer.push(i);
+  function solution(arr, queries) {
+    for ([s, e, k] of queries) {
+      for (let i = s; i <= e; i++) {
+        if (i % k === 0) {
+          arr[i] += 1;
+        }
       }
     }
-    return answer.length === 0 ? [-1] : answer;
+    return arr;
   }
 
-function isZeroFive(n) {
-  return [...String(n).matchAll(/[^05]/g)].length === 0;
-}
+solution([0,1,2,4,3], [[0,4,1], [0,3,2], [0,3,3]]) //?

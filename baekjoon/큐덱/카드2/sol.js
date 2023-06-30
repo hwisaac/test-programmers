@@ -1,3 +1,11 @@
+const filePath = process.platform === 'linux' ? 0 : './baekjoon/input.txt';
+let [N] = require('fs')
+  .readFileSync(filePath)
+  .toString()
+  .trim()
+  .split('\n')
+  .map(Number);
+
 class Node {
   constructor(item) {
     this.item = item;
@@ -56,4 +64,23 @@ class Queue {
   }
 }
 
-export default Queue;
+function findLastCard(N) {
+  const queue = new Queue();
+  // 카드 초기화
+  for (let i = 1; i <= N; i++) {
+    queue.push(i);
+  }
+
+  // 카드 처리
+  while (queue.size > 1) {
+    // 제일 위에 있는 카드 버리기
+    queue.pop();
+    // 그 다음 제일 위에 있는 카드를 제일 아래로 옮기기
+    queue.push(queue.pop());
+  }
+
+  // 남은 카드 번호 반환
+  return queue.front();
+}
+
+console.log(findLastCard(N));
