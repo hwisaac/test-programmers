@@ -1,5 +1,5 @@
 /** k! */
-export default function factorial(k) {
+export function factorial(k) {
   const memo = [];
 
   function calculateFactorial(k) {
@@ -14,7 +14,16 @@ export default function factorial(k) {
   return calculateFactorial(k);
 }
 
-// 예시 사용법
-const k = 4;
-const result = factorial(k);
-console.log(result); // 24
+export default function bigFactorial(k) {
+  const memo = [];
+
+  function calculateFactorial(k) {
+    if (k === 0n || k === 1n) return 1n;
+    if (memo[k]) return memo[k];
+    const result = calculateFactorial(k - 1n) * k;
+    memo[k] = result;
+    return result;
+  }
+
+  return calculateFactorial(BigInt(k));
+}
