@@ -8,29 +8,18 @@ let [N , ...datas ] = require('fs')
   // Run by Node.js
 
 
-  class Stack {
-    constructor() {
-      this.maxSize = 10;
-      this.stack = [];
-    }
-
-    push(data) {
-      if (this.stack.length >= this.maxSize) {
-        console.log('overflow');
+  function pingpong(n) {
+    function helper(i, val, direction) {
+      if (i > n) {
+        return val;
+      } else if (i % 7 == 0 || i.toString().includes('7')) {
+        return helper(i + 1, val - direction, -direction);
       } else {
-        this.stack.push(data);
+        return helper(i + 1, val + direction, direction);
       }
     }
-    pop(data) {
-      if (this.stack.length === 0) {
-        console.log('underflow');
-      }
-      return this.stack.pop();
-    }
-    printStack() {
-      console.log(this.stack.join(' '));
-    }
-  }
-  
-  const stack = new Stack();
 
+    return helper(1, 1, 1);
+  }
+
+pingpong(100) //?
